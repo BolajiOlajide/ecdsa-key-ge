@@ -40,6 +40,7 @@ func (ec *EllipticCurve) GenerateKeys() (privKey *ecdsa.PrivateKey, pubKey *ecds
 
 	if err == nil {
 		ec.privateKey = privKey
+		pubKey = &privKey.PublicKey
 		ec.publicKey = &privKey.PublicKey
 	}
 
@@ -162,7 +163,8 @@ func main() {
 		log.Fatal(err, "error generating keys")
 	}
 
-	fmt.Println(priv == nil, pub == nil)
+	err = ec.Test(priv, pub)
+	fmt.Println(err, priv == nil, pub == nil)
 
 	privKey, err := ec.EncodePrivate(priv)
 	if err != nil {
